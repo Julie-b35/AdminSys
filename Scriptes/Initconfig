@@ -77,9 +77,10 @@ IGZpCmZpCgpldmFsICQoc3NoLWFnZW50IC1zKQo="
         if [ "$(md5sum $dir/.bashrc | awk '{print $1}')" = "$md5sumBashRc" ] ; then
             echo "... déjà Fait"
         else
+            echo "$fileBase64" | base64 -d > $dir/.bashrc
             echo "... Fait"
         fi
-        #echo "$fileBase64" | base64 -d > $dir/.bashrc
+        
         
     done
 }
