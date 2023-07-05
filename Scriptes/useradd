@@ -1,0 +1,6 @@
+#!/bin/bash
+
+for idStagaire in {1..17} 
+do
+    echo $idStagaire
+done

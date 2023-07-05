@@ -67,9 +67,9 @@ LiB+Ly5iYXNoX2FsaWFzZXMKZmkKCmlmICEgc2hvcHQgLW9xIHBvc2l4OyB0aGVuCiAgaWYgWyAt
 ZiAvdXNyL3NoYXJlL2Jhc2gtY29tcGxldGlvbi9iYXNoX2NvbXBsZXRpb24gXTsgdGhlbgogICAg
 LiAvdXNyL3NoYXJlL2Jhc2gtY29tcGxldGlvbi9iYXNoX2NvbXBsZXRpb24KICBlbGlmIFsgLWYg
 L2V0Yy9iYXNoX2NvbXBsZXRpb24gXTsgdGhlbgogICAgLiAvZXRjL2Jhc2hfY29tcGxldGlvbgog
-IGZpCmZpCgpldmFsICQoc3NoLWFnZW50IC1zKQo="
+IGZpCmZpCgojZXZhbCAkKHNzaC1hZ2VudCAtcykK"
     
-    md5sumBashRc="b3a613ffec3956074c9aa55322f304fb"
+    md5sumBashRc="89796f716ed2dce38b34b3a868984e1e"
 
     for dir in {"/home/julie","/root","/etc/skel"}; do
         echo "Copie du ficher .bashrc dans le dossier $dir ..."

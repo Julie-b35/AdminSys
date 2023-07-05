@@ -1,0 +1,19 @@
+Désactiver le service DNSSEC
+
+
+Addresse IP du FQDN : ntp44.ad.campus-eni.fr : 10.0.0.21
+Addresse IP du FQDN : www.isc.org est l'alias de dualstack.osff2.map.fastly.net
+Elle pointe sur plusieur ip.
+2a04:4e42:600::729
+2a04:4e42::729
+2a04:4e42:200::729
+2a04:4e42:400::729
+151.101.2.217
+151.101.194.217
+151.101.66.217
+151.101.130.217
+
+
+
+LAN Clients - ens33 (172.18.15.0/24)
+LAN Serveur - ens36 (192.168.15.0/24)
