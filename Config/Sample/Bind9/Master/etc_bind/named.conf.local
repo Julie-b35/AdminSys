@@ -1,0 +1,40 @@
+//
+// Do any local configuration here
+//
+
+// Consider adding the 1918 zones here, if they are not used in your
+// organization
+//include "/etc/bind/zones.rfc1918";
+
+//zone tssr.eni
+zone "tssr.eni" {
+        type master;
+        file "db.tssr.eni";
+        notify yes;
+        allow-transfer { 192.168.15.11; };
+};
+
+//Reverse zone dns 192.168.15.0/24
+zone "15.168.192.in-addr.arpa" {
+        type master;
+        notify yes;
+        allow-transfer { 192.168.15.11; };
+        file "db.192.168.15";
+};
+
+//Reverse zone dns 172.18.15.0/24
+zone "15.18.172.in-addr.arpa" {
+        type master;
+        notify yes;
+        allow-transfer { 192.168.15.11; };
+        file "db.172.18.15";
+};
+
+//Reverse zone dns 172.30.15.0/24
+zone "15.30.172.in-addr.arpa" {
+        type master;
+        notify yes;
+        allow-transfer { 192.168.15.11; };
+        file "db.172.30.15";
+};
+

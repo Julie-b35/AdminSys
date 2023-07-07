@@ -1,0 +1,28 @@
+//zone tssr.eni
+zone "tssr.eni" {
+        type slave;
+	file "db.tssr.eni";
+	masters { 192.168.15.12; };      
+};
+
+//Reverse zone dns 192.168.15.0/24
+zone "15.168.192.in-addr.arpa" {
+        type slave;
+	file "db.15.168.192";
+	masters { 192.168.15.12; };       
+};
+
+//Reverse zone dns 172.18.15.0/24
+zone "15.18.172.in-addr.arpa" {
+        type slave;
+	file "db.15.18.172";
+	masters { 192.168.15.12; };        
+};
+
+//Reverse zone dns 172.30.15.0/24
+zone "15.30.172.in-addr.arpa" {
+        type slave;
+	file "db.15.30.172";
+	masters { 192.168.15.12; };        
+};
+

@@ -1,0 +1,15 @@
+;
+; Fichier de zone tssr.eni
+;
+$TTL	604800
+@	IN	SOA	ns1.tssr.eni.  admin.tssr.eni. (
+			2023070701	; serial
+			    604800	; Refresh
+			     86400	; Retry
+			   2419200	; Expire
+			    604800 )	; Negative Cache TTL
+;
+@	IN	NS	ns1.tssr.eni.
+@	IN	NS	ns2.tssr.eni.
+1	IN	PTR	pfsense.tssr.eni.
+254	IN	PTR	routux.tssr.eni.

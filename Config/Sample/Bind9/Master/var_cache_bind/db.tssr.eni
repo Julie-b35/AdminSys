@@ -1,0 +1,30 @@
+;
+; Fichier de zone tssr.eni
+;
+$TTL	604800
+@	IN	SOA	ns1.tssr.eni.  admin.tssr.eni. (
+			2023070703	; serial
+			    604800	; Refresh
+			     86400	; Retry
+			   2419200	; Expire
+			    604800 )	; Negative Cache TTL
+;
+@	IN	NS	ns1.tssr.eni.
+@	IN	NS	ns2.tssr.eni.
+
+; Serveur DEB-S1
+DEB-S1	IN	A	192.168.15.11
+ns2	IN	A	192.168.15.11
+
+; Serveur DEB-S2
+DEB-S2	IN	A	192.168.15.12
+ns1	IN	A	192.168.15.12
+test	IN	CNAME	ns1
+
+; VM Routeur Linux
+routux	IN	A	192.168.15.254
+routux	IN	A	172.18.15.254
+routux 	IN	A	172.30.15.254
+
+; Routeur Pfsense
+pfsense	IN	A	172.30.15.1

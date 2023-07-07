@@ -1,0 +1,32 @@
+//Serveur Esclave
+options {
+	directory "/var/cache/bind";
+
+        // Redirection exclusive (pas d’appel aux racines en cas d’indisponibilité)
+        // vers les serveurs Quad9
+        forward only;
+        forwarders { 10.128.0.3; };
+
+        // Restriction des hôtes auxquels répond le serveur
+        // Par défaut le serveur accepte toutes les requêtes
+        allow-query { rsxclts; };
+
+        //allow-query { 127.0.0.1; };
+
+        // Restriction des hôtes autorisés à adresser des requêtes récursives
+        // au serveur
+        // Le réseau où est implanté le serveur est accepté par défaut.
+        allow-recursion { rsxclts; };
+
+        notify yes;
+
+        // Communication DNSSEC désactivée
+        //Option ci-dessous obsolète
+        // dnssec-enable no;
+        // préféré plutôt cette options.
+        dnssec-validation no;
+
+        // Information de version non communiqué
+        version none;
+
+};
