@@ -34,6 +34,7 @@ declare -r VERT='\033[32m'
 declare -r NOIR='\033[0m'
 
 
+#Une fonction
 writeErreur() {
     echo -e "${ROUGE}Erreur : $1${NOIR}"
     echo
@@ -70,4 +71,4 @@ done
 
 echo -ne "${VERT}Entre ${ORANGE}${DEBUT_PLAGE_ANNEE}"
 echo -ne "${VERT} et ${ORANGE}${FIN_PLAGE_ANNEE}"
-echo -e "$VERT, Il y a ${ORANGE}${compteurAnneeBissextiles}${VERT} année bissextiles.${NOIR}"
+echo -e "${VERT}, Il y a ${ORANGE}${compteurAnneeBissextiles}${VERT} année bissextiles.${NOIR}"
