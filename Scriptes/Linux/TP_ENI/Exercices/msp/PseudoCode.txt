@@ -1,0 +1,6 @@
+# Initialisation des variables
+# Initialisation des constantes
+# 
+
+
+# Appeler 
