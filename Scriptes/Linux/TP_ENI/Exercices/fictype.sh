@@ -75,7 +75,8 @@ fi
 echo "Nombre total de fichiers dans $(realpath "$repertoire") : ${nombre_total_fichiers}"
 
 #Pour chaque extension présent dans le fichier type.ext, faire.
-for ext in $(cat types.ext)
+#for ext in $(cat types.ext)
+while read -r ext
 do
      #Traiter le nombre de fichiers par extension.
     nombre_fichiers=$(find "$repertoire"  -maxdepth 1 -type f -name "*$ext" 2>/dev/null | wc -l) 
@@ -101,6 +102,6 @@ do
     echo "--------------"
     echo "$msg"
     echo "${pourcentage_fichiers_par_ext}% des fichiers du répertoire"
-done
+done < types.ext
 
 

@@ -1,6 +1,79 @@
+Psudocode fonction.fonc
+
+Crée la fonction f_si_fichier_liste_utilisateur_existe
+
+Cette fonction devra vérifier l'éxistance du fichier ‘/tmp/listusersmaj.txt’
+0 -> Si le fichier existe
+1 -> si le fichier n'existe pas.
+---------------------------------------
+Si Fichier /tmp/listusersmaj.txt alors renvoi 0 sinon renvoi 1
+
+
+Créer la fonction f_menu
+Cette fonction ne feras qu'afficher les différent menu (Attention une condition sera nécessaire
+en effet il ne faudra pas afficher certaine ligne si /tmp/listusersmaj.txt n'existe pas.
+---------------------------------------
+Si f_si_fichier_liste_utilisateur_existe renvoi 0 alors
+    Affiche : - Création de nouveaux comptes
+    Affiche : - Suppression de comptes existants
+    Affiche : - Affichage de la liste des comptes en attente de création
+FinSi
+Affiche : - Ajout de compte à la liste de comptes à créer
+
+Crer la fonction f_controle_arguement $1
+Cette fonction contrôlera les arguement passer au scripte
+---------------------------------------
+Si nombres paramètres superieur à 1 alors afficher une erreur puis sortire du programme.
+Sinon si nombres paramètres égale à 1 alors
+    Sile 1er paramètre est 'create' alors interactif=0
+    Sinon afficher une erreur puis sortire du programme.
+    FinSi
+FinSi
+
+
+Crée la fonction f_control_utilisateur_dans_liste
+Cette fonction controle si un utilisateur existe dans la liste d'attente.
+---------------------------------------
+Contrôler si le fichie existe. (f_si_fichier_liste_utilisateur_existe)
+Jusqu'à ce que read lis la liste faire
+Si $REPLY 
+
+Crée la fonction f_creation
+
+
+Crée la fonction f_suppression
+
+Crée la fonction f_listeAttente
+
+
+
+
+Crée la fonction f_ajouter
+---------------------------------------
+Inhiber les basckslash
+Demander : Nom d'utilisateur : (nom)
+Demander : Dossier Home (home)
+Si Nom est vide alors affiche un message d'erreur
+Si home est vide alors affiche un message d'erreur
+Vérifier si l'utilisateur est crée dans la liste
+
+
+Crée la fonction f_quiter_menu
+---------------------------------------
+Afficher un message fin de programme
+quitter=true
+
+
+
+
+
+---------------------------------------------------------------------------------------
+
+Pseudo code main.sh
+
 # Initialisation des variables
 # Initialisation des constantes
 # 
 
 
-# Appeler 
+# Appeler le fichier fonction.fonc
