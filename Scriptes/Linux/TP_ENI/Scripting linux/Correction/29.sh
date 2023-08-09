@@ -7,7 +7,7 @@
 
 # Condition : $2 ne doit pas être vide, et on ne doit pas avoir plus de 2 paramètres
 if [[ -z $1 || -z $2 || $# -gt 2 ]]; then
-	echo "Syntaxe : $0 <annee1> <annee2>"
+	echo "Syntaxe : $0 <annee1> <annee2>"
 	exit 1
 fi
 
