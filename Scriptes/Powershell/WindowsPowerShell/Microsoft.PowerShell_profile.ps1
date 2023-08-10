@@ -45,7 +45,7 @@ if(Test-Path $Profile_ScriptFolder) {
 }
 
 # Show GUI
-$IPAddress=@(Get-WmiObject Win32_NetworkAdapterConfiguration | Where-Object {$_.DefaultIpGateway})[0].IPAddress[0]
+$IPAddress=@(Get-CimInstance Win32_NetworkAdapterConfiguration | Where-Object {$_.DefaultIpGateway})[0].IPAddress[0]
 $PSVersion=($host | Select-Object -ExpandProperty Version) -replace '^.+@\s'
 
 if (Get-IsAdmin) {
