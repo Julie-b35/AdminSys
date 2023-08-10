@@ -6,9 +6,14 @@
 # Création de la fonction Get-Time (Renvoie l'heure actuelle)
 function Get-Time {return $(Get-Date | ForEach-Object {$_.ToLongTimeString()})}
 
+function Get-IsAdmin {
+    $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+    return $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+}
+
 function prompt {
     Write-Host "[$(Get-Time)] "  -ForegroundColor Yellow -noNewLine
-    if ( $env:USERNAME -eq "Administrator" -or $env:USERNAME -eq "Administrateur" ) 
+    if ( Get-IsAdmin ) 
     {
         Write-Host "$env:USERDOMAIN\$env:USERNAME"  -ForegroundColor Red -noNewLine
     }
@@ -23,7 +28,7 @@ function prompt {
     Write-Host $? -ForegroundColor Magenta -noNewLine
     Write-Host ":"  -ForegroundColor Green -noNewLine
 
-    if ( $env:USERNAME -eq "Administrator" -or $env:USERNAME -eq "Administrateur" ) 
+    if ( Get-IsAdmin ) 
     {
         Write-Host "#"  -ForegroundColor Red -noNewLine
     }
@@ -43,19 +48,30 @@ if(Test-Path $Profile_ScriptFolder) {
 $IPAddress=@(Get-WmiObject Win32_NetworkAdapterConfiguration | Where-Object {$_.DefaultIpGateway})[0].IPAddress[0]
 $PSVersion=($host | Select-Object -ExpandProperty Version) -replace '^.+@\s'
 
+if (Get-IsAdmin) {
+    $modeAdmin = "Mode Administrateur"
+} else {
+    $modeAdmin = "Mode Utilisateur"
+}
 
 Write-Host "======================================================================================================================" -ForegroundColor Yellow
-Write-Host "|                                                                                                                    |" -ForegroundColor Yellow
-Write-Host "|   +++++++++++++++++++++++++++++++++++++++++++++             |                                                      |" -ForegroundColor Yellow
-Write-Host "|   +++++++               +++++           +++++++             |                                                      |" -ForegroundColor Yellow
-Write-Host "|   +++++++++++++   +++++++++++   +++++++   +++++             |                                                      |" -ForegroundColor Yellow
-Write-Host "|   +++++++++++++   +++++++++++   +++++++   +++++             |                                                      |" -ForegroundColor Yellow
-Write-Host "|   +++++++++++++   +++++++++++   +++++++   +++++             |                                                      |" -ForegroundColor Yellow
-Write-Host "|   +++   +++++++   ++++   ++++   +++     +++++++             |                                                      |" -ForegroundColor Yellow
-Write-Host "|   +++   +++++++   +++++++++++   +++++++   +++++             |                                                      |" -ForegroundColor Yellow
-Write-Host "|   +++   +++++++   +++++++++++   +++++++   +++++             |                                                      |" -ForegroundColor Yellow
-Write-Host "|   +++   +++++++   +++++++++++   +++++++   +++++             |                                                      |" -ForegroundColor Yellow
-Write-Host "|   ++++           ++++++++++++           +++++++             |                                                      |" -ForegroundColor Yellow
-Write-Host "|   +++++++++++++++++++++++++++++++++++++++++++++             |                                                      |" -ForegroundColor Yellow
-Write-Host "|                                                                                                                    |" -ForegroundColor Yellow
+Write-Host "                                                                                                                    " -ForegroundColor Yellow
+Write-Host "   +++++++++++++++++++++++++++++++++++++++++++++             |          " -ForegroundColor Yellow -noNewLine; 
+Write-Host "Bonjour $($env:USERNAME)"
+Write-Host "   +++++++               +++++           +++++++             |          " -ForegroundColor Yellow
+Write-Host "   +++++++++++++   +++++++++++   +++++++   +++++             |          " -ForegroundColor Yellow -NoNewline
+Write-Host $modeAdmin
+Write-Host "   +++++++++++++   +++++++++++   +++++++   +++++             |          " -ForegroundColor Yellow 
+Write-Host "   +++++++++++++   +++++++++++   +++++++   +++++             |          " -ForegroundColor Yellow -NoNewline
+Write-Host "Non Machine $($env:COMPUTERNAME)" 
+Write-Host "   +++   +++++++   ++++   ++++   +++     +++++++             |          " -ForegroundColor Yellow
+Write-Host "   +++   +++++++   +++++++++++   +++++++   +++++             |          " -ForegroundColor Yellow -noNewLine
+Write-Host "Adresse IP : $IPAddress"
+Write-Host "   +++   +++++++   +++++++++++   +++++++   +++++             |          " -ForegroundColor Yellow
+Write-Host "   +++   +++++++   +++++++++++   +++++++   +++++             |          " -ForegroundColor Yellow -noNewLine
+Write-Host "Identifiant : $env:UserDomain\$env:UserName"
+Write-Host "   ++++           ++++++++++++           +++++++             |          " -ForegroundColor Yellow
+Write-Host "   +++++++++++++++++++++++++++++++++++++++++++++             |          " -ForegroundColor Yellow -noNewLine
+Write-Host "Powershell : $PSVersion"
+Write-Host "                                                                        " -ForegroundColor Yellow
 Write-Host "======================================================================================================================" -ForegroundColor Yellow

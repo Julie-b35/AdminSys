@@ -37,7 +37,7 @@ Write-Host "# + " -ForegroundColor blue -nonewline; Write-Host "++++  +++++"
 Write-Host "# + " -ForegroundColor blue -nonewline; Write-Host "+++++  ++++`tComputerName`t`t" -nonewline; Write-Host $($env:COMPUTERNAME)
 Write-Host "# + " -ForegroundColor blue -nonewline; Write-Host "+++++  ++++`tIP Address`t`t" -nonewline; Write-Host $IPAddress
 Write-Host "# + " -ForegroundColor blue -nonewline; Write-Host "++++  +   +`tUserName`t`t" -nonewline; Write-Host $env:UserDomain\$env:UserName
-Write-Host "# + " -ForegroundColor blue -nonewline; Write-Host "+++  ++++++`tPowerShell `t`t" -nonewline; Write-Host $PSVersion
+Write-Host "# + " -ForegroundColor blue -nonewline; Write-Host "+++  ++++++`tPowerShell `t`t" -nonewline;     
 Write-Host "# + " -ForegroundColor blue -nonewline; Write-Host "+++++++++++"
 Write-Host "# +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++`n" -ForegroundColor Yello
 
