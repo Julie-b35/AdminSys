@@ -16,6 +16,7 @@ Write-Host "- Quelle commande avez-vous utilisé ? " -Foreground Green -NoNewLine
 # Cr?er une variable qui stockera l?adition de l?index de journal num?ro 10 et 20
 ## Quelle commande avez-vous utilis? ?
 $additionLog = $log[9].Index + $log[19].Index
+Write-Host " additionLog vaut : $additionLog"
 
 Write-Host "-------------------------------------------------------------------------------------------" -Foreground Yellow
 
@@ -59,6 +60,9 @@ Write-Host "• Utilisation de While / If ou Switch
 `tRéalisez un menu à choix multiples, voici l'affichage attendu :" -Foreground Yellow
 
 Write-Host "Appels du scripte GestionAD.ps1" -ForegroundColor Cyan 
-. "$pathToExercices\GestionAD.ps1"
+#. "$pathToExercices\GestionAD.ps1"
 Write-Host "Voici son contenus"
 Get-Content "$pathToExercices\GestionAD.ps1"
+Write-Host "-------------------------------------------------------------------------------------------" -Foreground Yellow
+
+

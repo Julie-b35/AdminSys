@@ -3,7 +3,7 @@
 function DemanderDate([string]$prompt) {
     do {
         $echec=$false
-        $date = Read-Host -Prompt $prompt
+        $date = Read-Host $prompt
     
         if ($date -notmatch '^[0-9]{2}/[0-9]{2}/[0-9]{4}$') {
             Write-Host "La format que vous avez tapez n'est pas une date."
@@ -11,6 +11,7 @@ function DemanderDate([string]$prompt) {
         } 
         $date = $date -split '/'
     
+        
         if ($date[0] -eq '00' -or $date[0] -gt 31) {
             Write-Host "Le jour doit être compris entre 01 et 31."
             $date[0] 
