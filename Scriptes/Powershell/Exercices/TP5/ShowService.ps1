@@ -43,7 +43,7 @@ function Get-Error {
     if ( $ListeErreursServices.Count -gt 0) {
         foreach ($ErreurService in $ListeErreursServices) {
             
-            $txt = $txt + $ErreurService.Name + ","
+            $txt = $txt + $ErreurService.Name + "," 
             $txtErreur = $txtErreur + "`n" + $ErreurService.Erreur
         }
         $txt = $txt -replace ',$'
