@@ -4,3 +4,4 @@ if ($tache.State -eq 'Ready') {
     Disable-ScheduledTask $tache
 }
 
+shutdown /a
