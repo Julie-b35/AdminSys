@@ -2,13 +2,108 @@ Installation LAMP
 
 sudo apt install apache2 mariadb-server php
 
+#Installation des extenstion PHP sur debian 12 (GLPI 10)
+sudo apt install php8.2-mysql php8.2-mbstring php8.2-xml php8.2-curl php8.2-gd php8.2-intl php8.2-ldap php8.2-apcu php8.2-xmlrpc php8.2-bz2 php8.2-zip
 
-apt install php8.2-mysql php8.2-mbstring php8.2-xml php8.2-curl php8.2-gd php8.2-intl php8.2-ldap
-apt install php7.3-mysql php7.3-mbstring php7.3-xml php7.3-curl php7.3-gd php7.3-intl php7.3-ldap php7.3-apcu php7.3-xmlrpc php7.3-bz2 php7.3-zip
+#Installation des extenstion PHP sur debian 11 (GLPI 9.5)
+sudo apt install php7.4-mysql php7.4-mbstring php7.4-xml php7.4-curl php7.4-gd php7.4-intl php7.4-ldap php7.4-apcu php7.4-xmlrpc php7.4-bz2 php7.4-zip 
 
-#s : fileinfo, filter, libxml, json.
+# Utilitaire pour décompresser l'archive zip
+sudo apt install zip
+
+Téléchargement du gestionnaire de base de donnée Mysql
+wget https://files.phpmyadmin.net/phpMyAdmin/5.2.1/phpMyAdmin-5.2.1-all-languages.zip
+
+Téléchargement de GLPI
+GLPI version 10 (installer sur Debian 12)
+wget https://github.com/glpi-project/glpi/releases/download/10.0.9/glpi-10.0.9.tgz
+
+GLPI version 9.5. (installer sur Debian 12)
+wget https://github.com/glpi-project/glpi/releases/download/9.5.8/glpi-9.5.8.tgz
 
 
+# Rendre plus facile l'accès aux services Web
+sudo chown -R julie:julie /etc/apache2/sites-available/
+sudo chown -R julie:www-data /var/www/
+sudo chmod g+s /var/www/
+ln -sv /var/www/ SiteWeb
+ln -sv /etc/apache2/sites-available/ configServicesWeb
 
-session.cookie_httponly = On
+# Configuration Mysql
+sudo mysql_secure_installation
 
+# Mise en place compte admin
+mysql -u root -p
+% permet de ce connecter quelque soit l'ip
+CREATE USER 'julie'@'%' IDENTIFIED BY 'rootsan';
+GRANT ALL PRIVILEGES ON *.* TO 'julie'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
+# Mise en place base glpi et user
+create database glpi;
+grant all privileges on glpi.* to 'glpi'@'%' identified by 'glpi';
+FLUSH PRIVILEGES;
+
+#Afficher les privilège
+show grants for root@localhost;
+show grants for 'julie'@'%';
+
+# Décompression des archives
+cd SiteWeb
+# version 10
+tar -xzvf ~/glpi-10.0.9.tgz
+# version 9.5
+tar -xzvf ~/glpi-9.5.8.tgz
+unzip ~/phpMyAdmin-5.2.1-all-languages.zip
+mv phpMyAdmin-5.2.1-all-languages/ mysql
+cd ..
+
+#Création dossier glpi
+sudo mkdir /etc/glpi
+echo "<?php
+define('GLPI_VAR_DIR', '/var/lib/glpi');
+define('GLPI_DOC_DIR', GLPI_VAR_DIR);
+define('GLPI_CRON_DIR', GLPI_VAR_DIR . '/_cron');
+define('GLPI_DUMP_DIR', GLPI_VAR_DIR . '/_dumps');
+define('GLPI_GRAPH_DIR', GLPI_VAR_DIR . '/_graphs');
+define('GLPI_LOCK_DIR', GLPI_VAR_DIR . '/_lock');
+define('GLPI_PICTURE_DIR', GLPI_VAR_DIR . '/_pictures');
+define('GLPI_PLUGIN_DOC_DIR', GLPI_VAR_DIR . '/_plugins');
+define('GLPI_RSS_DIR', GLPI_VAR_DIR . '/_rss');
+define('GLPI_SESSION_DIR', GLPI_VAR_DIR . '/_sessions');
+define('GLPI_TMP_DIR', GLPI_VAR_DIR . '/_tmp');
+define('GLPI_UPLOAD_DIR', GLPI_VAR_DIR . '/_uploads');
+define('GLPI_CACHE_DIR', GLPI_VAR_DIR . '/_cache');
+define('GLPI_LOG_DIR', '/var/log/glpi');
+?>" | sudo tee -a /etc/glpi/local_define.php
+sudo chown -R www-data:www-data /etc/glpi
+
+sudo mkdir /var/lib/glpi
+sudo chown -R www-data:www-data /var/lib/glpi
+sudo mkdir /var/log/glpi
+sudo chown -R www-data:www-data /var/log/glpi
+sudo chown -R www-data:www-data /var/www/glpi/files/
+sudo cp -a /var/www/glpi/files/* /var/lib/glpi/
+sudo chown -R www-data:www-data /var/www/glpi/marketplace/
+
+
+echo "<?php
+define('GLPI_CONFIG_DIR', '/etc/glpi/');
+if (file_exists(GLPI_CONFIG_DIR . '/local_define.php')) { require_once GLPI_CONFIG_DIR . '/local_define.php';}
+?>" > /var/www/glpi/inc/downstream.php
+
+#Modification de la valeur de 'session.cookie_httponly = On'
+sudo vim /etc/php/8.2/apache2/php.ini
+# Activation du module de réécriture d'url
+sudo a2enmod rewrite
+sudo systemctl restart apache2.service
+
+
+#Mise en place des fichier de configuration d'apache
+
+Sur la debian 11 (glpi 9)
+sudo a2ensite glpi9.olympus.gr.conf mysql3.olympus.gr.conf
+Sur la debian 12 (glpi 10)
+sudo a2ensite glpi10.olympus.gr.conf mysql2.olympus.gr.conf
+
+sudo systemctl reload apache2.service
