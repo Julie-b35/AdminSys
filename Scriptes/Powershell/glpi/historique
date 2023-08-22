@@ -1,0 +1,160 @@
+sudo -l
+su -
+exit
+su -*
+su -
+exit
+sudo -s
+su -
+sudo ls
+sudo ls /
+sudo poweroff 
+sudo apr install tmux vim
+sudo apt install tmux vim
+sudo poweroff 
+sudo apt update
+cat /etc/network/interfaces
+sudo vim /etc/network/interfaces
+sud
+sudo service networking restart 
+ip a
+sudo vim /etc/network/interfaces
+sudo service networking stop
+ip a
+sudo service networking start
+ip a
+sudo apt update 
+sudo apt upgrade 
+sudo reboot
+apt update
+sudo apt update
+sudo apt upgrade 
+cat /etc/issue
+lsb_release 
+sudo poweroff 
+sudo vim /etc/network/interfaces
+ip a
+sudo service networking restart 
+ip a
+sudo vim /etc/hostname 
+sudo vim /etc/hosts
+sudo reboot
+sudo apt update
+apt search php*
+apt search php* | grep php
+ls
+wget https://github.com/glpi-project/glpi/releases/download/10.0.9/glpi-10.0.9.tgz
+wget https://files.phpmyadmin.net/phpMyAdmin/5.2.1/phpMyAdmin-5.2.1-all-languages.zip
+ls
+sudo apt install php apache2 mariadb
+sudo apt install php apache2 mariadb-server
+ping google.fr
+ping ad.campus-eni.fr
+ls
+sudo chown -R julie:julie /etc/apache2/sites-available/
+sudo chown -R julie:www-data /var/www/
+sudo chmod g+s /var/www/
+ln -sv /var/www/ SiteWeb
+ls
+ls ./SiteWeb
+ln -sv /etc/apache2/sites-available/ configServicesWeb
+ls
+sudo a2enmod proxy
+sudo systemctl restart apache2
+sudo a2enmod ssl
+sudo systemctl restart apache2
+sudo apache2ctl configtest 
+sudo a2ensite pfsense.conf 
+sudo apache2ctl configtest 
+sudo systemctl reload apache2.service 
+sudo vim /etc/apache2/ports.conf 
+sudo systemctl restart apache2
+sudo vim /etc/apache2/ports.conf 
+sudo systemctl restart apache2
+sudo systemctl reload apache2.service 
+sudo apache2ctl configtest 
+cat /var/log/apache2/
+sudo -i
+ls
+cd si
+cd SiteWeb
+tar -xvf ../glpi-10.0.9.tgz 
+man tar
+tar -xzvf ../glpi-10.0.9.tgz 
+ls
+ls ..
+tar -xzvf ~/glpi-10.0.9.tgz 
+ls
+sudo apt install zip
+unzip ~/phpMyAdmin-5.2.1-all-languages.zip 
+ls
+mv phpMyAdmin-5.2.1-all-languages/ mysql
+ls
+sys
+ls -la glpi/
+ls -la mysql/
+sudo a2ensite glpi.conf 
+sudo systemctl reload apache2.service 
+sudo apt install php8.2-mysql 
+sudo systemctl restart apache2
+sudo systemctl reload apache2.service 
+journalctl -xeu apache2
+:q
+sudo journalctl -xeu apache2
+sudo systemctl reload apache2.service 
+sudo apt install php8.2-mbstring php8.2-xml
+sudo systemctl restart apache2
+sudo apt install php8.2-curl php8.2-gd php8.2-intl
+sudo systemctl restart apache2
+ls
+ls glpi/
+ls glpi/public/
+sudo systemctl reload apache2.service 
+chmod -R g+w glpi/files
+ls
+mkdir glpi/config
+ls -l
+ls -l glpi/
+chmod -R g+w glpi/config
+sudo systemctl reload apache2.service 
+sudo journalctl -xeu apache2
+sudo a2enmod rewrite 
+sudo systemctl restart apache2
+sudo journalctl -xeu apache2
+sudo vim /etc/php/8.2/apache2/php.ini 
+sudo apt install php8.2-ldap php8.2-bz2 php8.2-zip 
+sudo systemctl restart apache2
+ls glpi/
+chmod g+w -R glpi/marketplace/
+sudo apt install php8.2-apcu 
+sudo apt install php8.2-xmlrpc php8.2-imap
+sudo apt install php-apcu
+sudo apt install php-cas
+sudo systemctl restart apache2
+ls mysql/
+sudo a2ensite mysql.conf 
+sudo systemctl restart apache2
+sudo mysql_secure_installation 
+mysql -u root
+mysql -u root -p
+mysql -u julie
+mysql -u julie -p
+mysql -u root -p
+ls
+chown -R julie:julie glpi/
+ls glpi/
+ls -la glpi/
+ls
+sudo chown -R julie:www-data glpi/config/
+sudo chown -R julie:www-data glpi/files/
+sudo chown -R julie:www-data glpi/marketplace/
+ls -l glpi/files/
+ls -l glpi/files/_lo
+ls -l glpi/files/_log
+ls -l glpi/files/_cache/
+sudo chown -R www-data:www-data glpi/marketplace/
+sudo chown -R www-data:www-data glpi/files/
+sudo chown -R www-data:www-data glpi/config/
+groups
+sudo usermod -aG www-data julie
+exit

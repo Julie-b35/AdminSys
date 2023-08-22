@@ -1,0 +1,14 @@
+Installation LAMP
+
+sudo apt install apache2 mariadb-server php
+
+
+apt install php8.2-mysql php8.2-mbstring php8.2-xml php8.2-curl php8.2-gd php8.2-intl php8.2-ldap
+apt install php7.3-mysql php7.3-mbstring php7.3-xml php7.3-curl php7.3-gd php7.3-intl php7.3-ldap php7.3-apcu php7.3-xmlrpc php7.3-bz2 php7.3-zip
+
+#s : fileinfo, filter, libxml, json.
+
+
+
+session.cookie_httponly = On
+
