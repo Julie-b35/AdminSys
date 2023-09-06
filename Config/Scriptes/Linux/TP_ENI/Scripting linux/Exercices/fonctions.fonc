@@ -1,0 +1,124 @@
+#======================================================================= 
+# FILE: ~infousers.sh # USAGE: ./~infousers.sh
+# DESCRIPTION: Commande qui donne le nombre de fichiers par extension
+# 
+# OPTIONS: --- 
+# REQUIREMENTS: --- 
+# BUGS: --- 
+# NOTES: --- 
+# AUTHOR: Penthium2, contact@viperr.org 
+# COMPANY: viperr 
+# CREATED: 05.03.2015 
+# REVISION: 02.08.2019 
+#=======================================================================
+
+# Fonction Affichage du menu
+#   Afficher : Gestionnaire des sauvegarde.
+#   Afficher : (1) : Sauvegarder les fichiers du répertoire courant se terminant par .sh avec l'extension .save
+#   Afficher : (2) : Supprimer les fichiers se terminant par .save
+#   Afficher : (3) : Lister les fichiers disposants d’une sauvegarde (vert) et ceux non sauvegardés (rouge)
+#   Afficher : (Q) : Quitter
+
+function fonc_menu() {
+    echo
+    echo "========================================================================================================"
+    echo "|                                         Gestionnaire des sauvegarde.                                 |"
+    echo "|------------------------------------------------------------------------------------------------------|"
+    echo "| (1) | Sauvegarder les fichiers du répertoire courant se terminant par .sh avec l'extension .save     |"
+    echo "| (2) | Supprimer les fichiers se terminant par .save                                                  |"
+    echo -e "| (3) | Lister les fichiers ${VERT}disposants d'une sauvegarde${NOIR} (vert) et ceux ${ROUGE}non sauvegardés${NOIR} (rouge)         |"
+    echo "| (Q) | Quitter                                                                                        |"
+    echo "========================================================================================================"
+    echo
+}
+
+# Fonction permettant d'afficher des erreur.
+function fonc_erreur() {
+    echo -e "${ROUGE}Une erreur est survenue.${NOIR}" >/dev/stderr
+    echo -e "${ROUGE}$1${NOIR}" >/dev/stderr
+    exit 1
+}
+
+function fonc_success() {
+    echo -e "${VERT}Succes${NOIR}"
+}
+function fonc_echec() {
+    echo -e "${ROUGE}Échec${NOIR}"
+}
+
+# Fonction (fonc_sauvegarder_scriptes)
+# Afficher : Traitement : Sauvegarde les fichiers du répertoire courant se terminant par .sh avec l'extension .save
+function fonc_sauvegarder_scriptes() {
+    # Sortir de la fonction si aucun fichier terminant par .sh existe.
+    ls -1 ./*.sh > /dev/null 2>&1 || fonc_erreur "Aucun scripte trouvée."
+    echo "Traitement : Sauvegarde les fichiers du répertoire courant se terminant par .sh avec l'extension .save"
+    # Boucle tant que read à des retour de ls -1 *.sh
+    while read -r ; do
+        echo -n "Sauvegarde du scripte ${REPLY} vers ${REPLY}.save ..."
+        cp -au "${REPLY}" "${REPLY}.save" 2>/dev/null && fonc_success || fonc_echec
+    done < <(ls -1 ./*.sh)
+    
+    echo "Fin de l'opération"
+}
+
+# Fonction (fonc_supprimer_sauvegarde)
+# Afficher : Supprimer les fichiers se terminant par .save
+function fonc_supprimer_sauvegarde() {
+    # Sortir de la fonction si aucun fichier terminant par .sh.save existe.
+    ls -1 ./*.sh.save > /dev/null 2>&1 || fonc_erreur "Aucune sauvegarde trouvée."
+
+    echo -e "\nTraitement: Supprimer les fichiers se terminant par .save\n"
+
+    while read -r ; do
+        echo -n "Suppression de la sauvegarde du scripte ${REPLY}. ..."
+        rm -f "${REPLY}" 2>/dev/null && fonc_success || fonc_echec
+    done < <(ls -1 *.sh.save)
+    echo "Fin de l'opération"
+        
+}
+
+
+
+# Fonction (fonc_liste_sauvegarde)
+# Afficher : Lister les fichiers disposants d’une sauvegarde (vert) et ceux non sauvegardés (rouge)
+function fonc_liste_sauvegarde() {
+    # Sortir de la fonction si aucun fichier terminant par .sh existe.
+    ls -1 ./*.sh > /dev/null 2>&1 || fonc_erreur "Aucun scripte trouvée."
+
+    echo -e "\nTraitement: Lister les fichiers ${VERT}disposants d'une sauvegarde${NOIR} (vert) et ceux ${ROUGE}non sauvegardés${NOIR} (rouge)\n"
+    while read -r ; do
+        
+    
+        if [[ -f "${REPLY}.save" ]]; then
+            echo -e "${VERT}${REPLY}${NOIR}"
+        else 
+            echo -e "${ROUGE}${REPLY}${NOIR}"
+        fi
+    done < <(ls -1 ./*.sh)
+    echo -e "\nFin de l'opération"
+}
+
+function fonc_quiter() {
+    quiter=true
+    echo -e "\nMerci d'avoir utiliser notre programme.\n"
+}
+
+function fonc_autre_chose() {
+    ok=false
+    until $ok ; do
+        read -rp "Souhaitez-vous faire autre chose (O)ui/(N)on? : " choix2
+        case $choix2 in
+            o|O)
+                ok=true
+                echo -e "\nTrès bien, je vous renvoie vers le menu.\n"
+            ;;
+            n|N)
+                ok=true
+                fonc_quiter
+            ;;
+            *)
+                echo -e "\nJe n'ai pas compris, de nouveau : \n"
+            ;;
+        esac
+    done
+}

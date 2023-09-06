@@ -1,0 +1,109 @@
+#!/usr/bin/bash
+
+#Otions
+silency=0
+user=julie
+
+
+motd() {
+echo "
+=======================================================
+|                                                     |
+|                Configuration Initial                |
+|                                                     |
+=======================================================
+"
+}
+
+genereBashrc() {
+    fileBase64="CmNhc2UgJC0gaW4KICAgICppKikgOzsKICAgICAgKikgcmV0dXJuOzsKZXNhYwoKSElTVENPTlRS
+T0w9aWdub3JlYm90aAoKc2hvcHQgLXMgaGlzdGFwcGVuZAoKSElTVFNJWkU9MTAwMApISVNURklM
+RVNJWkU9MjAwMAoKVElNRV9TVFlMRT1sb25nLWlzbwpzaG9wdCAtcyBjaGVja3dpbnNpemUKCgpb
+IC14IC91c3IvYmluL2xlc3NwaXBlIF0gJiYgZXZhbCAiJChTSEVMTD0vYmluL3NoIGxlc3NwaXBl
+KSIKCmlmIFsgLXogIiR7ZGViaWFuX2Nocm9vdDotfSIgXSAmJiBbIC1yIC9ldGMvZGViaWFuX2No
+cm9vdCBdOyB0aGVuCiAgICBkZWJpYW5fY2hyb290PSQoY2F0IC9ldGMvZGViaWFuX2Nocm9vdCkK
+ZmkKCmNhc2UgIiRURVJNIiBpbgogICAgeHRlcm0tY29sb3J8Ki0yNTZjb2xvcikgY29sb3JfcHJv
+bXB0PXllczs7CmVzYWMKCgppZiBbIC1uICIkZm9yY2VfY29sb3JfcHJvbXB0IiBdOyB0aGVuCiAg
+ICBpZiBbIC14IC91c3IvYmluL3RwdXQgXSAmJiB0cHV0IHNldGFmIDEgPiYvZGV2L251bGw7IHRo
+ZW4KCSMgV2UgaGF2ZSBjb2xvciBzdXBwb3J0OyBhc3N1bWUgaXQncyBjb21wbGlhbnQgd2l0aCBF
+Y21hLTQ4CgkjIChJU08vSUVDLTY0MjkpLiAoTGFjayBvZiBzdWNoIHN1cHBvcnQgaXMgZXh0cmVt
+ZWx5IHJhcmUsIGFuZCBzdWNoCgkjIGEgY2FzZSB3b3VsZCB0ZW5kIHRvIHN1cHBvcnQgc2V0ZiBy
+YXRoZXIgdGhhbiBzZXRhZi4pCgljb2xvcl9wcm9tcHQ9eWVzCiAgICBlbHNlCgljb2xvcl9wcm9t
+cHQ9CiAgICBmaQpmaQoKaWYgWyAiJGNvbG9yX3Byb21wdCIgPSB5ZXMgXTsgdGhlbgogICAgaWYg
+WyBgaWQgLXVgIC1lcSAwIF07IHRoZW4KICAgICAgICBQUzE9IlxbXDAzM1szODs1OzIyNm1cXVtc
+QV1cWyQodHB1dCBzZ3IwKVxdIFxbJCh0cHV0IHNncjApXF1cW1wwMzNbMzg7NTsxOTZtXF1cdVxb
+JCh0cHV0IHNncjApXF1cW1wwMzNbMzg7NTs0OG1cXUBcWyQodHB1dCBzZ3IwKVxdXFtcMDMzWzM4
+OzU7MjFtXF1caFxbJCh0cHV0IHNncjApXF1cW1wwMzNbMzg7NTs0OG1cXTpcWyQodHB1dCBzZ3Iw
+KVxdXFtcMDMzWzM4OzU7MTI4bVxdXHdcWyQodHB1dCBzZ3IwKVxdXG5cWyQodHB1dCBzZ3IwKVxd
+XFtcMDMzWzM4OzU7NDhtXF0tLT5cWyQodHB1dCBzZ3IwKVxdIFxbJCh0cHV0IHNncjApXF1cW1ww
+MzNbMzg7NTsyMTNtXF1cJD9cWyQodHB1dCBzZ3IwKVxdXFtcMDMzWzM4OzU7NDhtXF06XFskKHRw
+dXQgc2dyMClcXVxbXDAzM1szODs1OzE5Nm1cXVxcJFxbJCh0cHV0IHNncjApXF0+IFxbJCh0cHV0
+IHNncjApXF0iCiAgICBlbHNlCiAgICAgICAgUFMxPSJcW1wwMzNbMzg7NTsyMjZtXF1bXEFdXFsk
+KHRwdXQgc2dyMClcXSBcWyQodHB1dCBzZ3IwKVxdXFtcMDMzWzM4OzU7NDVtXF1cdVxbJCh0cHV0
+IHNncjApXF1cW1wwMzNbMzg7NTs0OG1cXUBcWyQodHB1dCBzZ3IwKVxdXFtcMDMzWzM4OzU7MjFt
+XF1caFxbJCh0cHV0IHNncjApXF1cW1wwMzNbMzg7NTs0OG1cXTpcWyQodHB1dCBzZ3IwKVxdXFtc
+MDMzWzM4OzU7MTI4bVxdXHdcWyQodHB1dCBzZ3IwKVxdXG5cWyQodHB1dCBzZ3IwKVxdXFtcMDMz
+WzM4OzU7NDhtXF0tLT5cWyQodHB1dCBzZ3IwKVxdIFxbJCh0cHV0IHNncjApXF1cW1wwMzNbMzg7
+NTsyMTNtXF1cJD9cWyQodHB1dCBzZ3IwKVxdXFtcMDMzWzM4OzU7NDhtXF06XFskKHRwdXQgc2dy
+MClcXVxbXDAzM1szODs1OzUxbVxdXFwkXFskKHRwdXQgc2dyMClcXT4gXFskKHRwdXQgc2dyMClc
+XSIKICAgIGZpCiAgICAjUFMxPScke2RlYmlhbl9jaHJvb3Q6KygkZGViaWFuX2Nocm9vdCl9XFtc
+MDMzWzAxOzMybVxdXHVAXGhcW1wwMzNbMDBtXF06XFtcMDMzWzAxOzM0bVxdXHdcW1wwMzNbMDBt
+XF1cJCAnCmVsc2UKICAgIFBTMT0nJHtkZWJpYW5fY2hyb290OisoJGRlYmlhbl9jaHJvb3QpfVx1
+QFxoOlx3XCQgJwpmaQp1bnNldCBjb2xvcl9wcm9tcHQgZm9yY2VfY29sb3JfcHJvbXB0CgpjYXNl
+ICIkVEVSTSIgaW4KeHRlcm0qfHJ4dnQqKQogICAgUFMxPSJcW1xlXTA7JHtkZWJpYW5fY2hyb290
+OisoJGRlYmlhbl9jaHJvb3QpfVx1QFxoOiBcd1xhXF0kUFMxIgogICAgOzsKKikKICAgIDs7CmVz
+YWMKCmlmIFsgLXggL3Vzci9iaW4vZGlyY29sb3JzIF07IHRoZW4KICAgIHRlc3QgLXIgfi8uZGly
+Y29sb3JzICYmIGV2YWwgIiQoZGlyY29sb3JzIC1iIH4vLmRpcmNvbG9ycykiIHx8IGV2YWwgIiQo
+ZGlyY29sb3JzIC1iKSIKICAgIGFsaWFzIGxzPSdscyAtLWNvbG9yPWF1dG8gLS10aW1lLXN0eWxl
+PSRUSU1FX1NUWUxFJwogICAgI2FsaWFzIGRpcj0nZGlyIC0tY29sb3I9YXV0bycKICAgICNhbGlh
+cyB2ZGlyPSd2ZGlyIC0tY29sb3I9YXV0bycKCiAgICBhbGlhcyBncmVwPSdncmVwIC0tY29sb3I9
+YXV0bycKICAgIGFsaWFzIGZncmVwPSdmZ3JlcCAtLWNvbG9yPWF1dG8nCiAgICBhbGlhcyBlZ3Jl
+cD0nZWdyZXAgLS1jb2xvcj1hdXRvJwpmaQoKCmFsaWFzIGxsPSdscyAtYWxGJwphbGlhcyBsYT0n
+bHMgLUEnCmFsaWFzIGw9J2xzIC1DRicKCmFsaWFzIGFsZXJ0PSdub3RpZnktc2VuZCAtLXVyZ2Vu
+Y3k9bG93IC1pICIkKFsgJD8gPSAwIF0gJiYgZWNobyB0ZXJtaW5hbCB8fCBlY2hvIGVycm9yKSIg
+IiQoaGlzdG9yeXx0YWlsIC1uMXxzZWQgLWUgJ1wnJ3MvXlxzKlswLTldXCtccyovLztzL1s7Jnxd
+XHMqYWxlcnQkLy8nXCcnKSInCmFsaWFzIHN1ZG89J3N1ZG8gJwoKaWYgWyAtZiB+Ly5iYXNoX2Fs
+aWFzZXMgXTsgdGhlbgogICAgLiB+Ly5iYXNoX2FsaWFzZXMKZmkKCmlmICEgc2hvcHQgLW9xIHBv
+c2l4OyB0aGVuCiAgaWYgWyAtZiAvdXNyL3NoYXJlL2Jhc2gtY29tcGxldGlvbi9iYXNoX2NvbXBs
+ZXRpb24gXTsgdGhlbgogICAgLiAvdXNyL3NoYXJlL2Jhc2gtY29tcGxldGlvbi9iYXNoX2NvbXBs
+ZXRpb24KICBlbGlmIFsgLWYgL2V0Yy9iYXNoX2NvbXBsZXRpb24gXTsgdGhlbgogICAgLiAvZXRj
+L2Jhc2hfY29tcGxldGlvbgogIGZpCmZpCgojZXZhbCAkKHNzaC1hZ2VudCAtcykK"
+    
+    md5sumBashRc="7e6335c414382e7e0b76e75c9554df13"
+
+    for dir in {"/home/julie","/root","/etc/skel"}; do
+        echo "Copie du ficher .bashrc dans le dossier $dir ..."
+        
+        if [ "$(md5sum $dir/.bashrc | awk '{print $1}')" = "$md5sumBashRc" ] ; then
+            echo "... déjà Fait"
+        else
+            echo "$fileBase64" | base64 -d > $dir/.bashrc
+            echo "... Fait"
+        fi
+        
+        
+    done
+}
+
+checkRoot() {
+    [[ $UID -ne 0 ]] && echo "Le scripte doit être lancé en root." && exit 1
+    return 0
+}
+main() {
+    [ $silency -eq 0 ] && motd
+    checkRoot 
+    genereBashrc
+}
+
+
+while getopts "q" options
+do
+    case $options in
+        q)
+            silency=1
+            ;;
+    esac
+done
+
+main
+exit 0

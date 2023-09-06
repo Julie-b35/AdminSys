@@ -1,0 +1,30 @@
+Début du programme
+nb_tasses <-- 8
+
+si (pas de café) alors
+  fin du programme
+fin si
+
+si (pas d'eau) alors
+  fin du programme
+fin si
+
+si (pas de filtre) alors
+  fin du programme
+fin si
+
+si (pas de électricité) alors
+  fin du programme
+fin si
+
+nb_doses = 0
+
+jusqu'à ce que (nb_doses = nb_tasses) faire
+  ajouter une dose d'eau
+  ajouter une dose de café
+  nb_doses = nb_doses + 1
+fin jusqu'à
+
+mettre en route la machine à café
+
+Fin du programme
