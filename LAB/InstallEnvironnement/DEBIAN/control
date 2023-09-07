@@ -1,0 +1,8 @@
+Package: install-environnement
+Version: 1.0
+Section: admin
+Priority: optional
+Architecture: all
+Depends: bash
+Maintainer: dev <dev@jlab.ovh>
+Description: Personalise un environnement Linux
