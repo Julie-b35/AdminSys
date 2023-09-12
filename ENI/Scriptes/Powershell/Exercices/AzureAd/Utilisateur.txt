@@ -1,0 +1,21 @@
+﻿Utilisateur
+
+ObjectId                             SignInName
+--------                             ----------
+03727f7a-7f01-43be-af78-fec24ff29864 labeni@rtssr014f-6.lab-eni.fr
+3a69453d-0ca5-4fa2-ada3-769265faf5f8 admin@WWLx100068.onmicrosoft.com
+4de49a49-3992-4de5-bb71-f92ef703045a oussama@rtssr014f-6.lab-eni.fr
+509ac112-7bdd-44e1-b32d-51e310b73893 sacha@rtssr014f-6.lab-eni.fr
+c18bebc6-0901-4c8d-9910-39e5d079cbdd zachary@rtssr014f-6.lab-eni.fr
+cd9d44b5-96d3-4845-a9ad-ae41ba72952f admin@rtssr014f-6.lab-eni.fr
+
+
+Get-MsolGroup | select ObjectID,DisplayName
+Groupes
+
+ObjectId                               DisplayName                
+--------                               -----------                                                                 
+21327b50-aa52-4f5c-8550-8d7675979eca G-SEC-LicenceOffice365_E3
+3c74bc27-c408-4505-9314-aa78171b9631 G-SEC-RoleAdminGlobale
+f45785c3-01db-495e-bbad-e306998db9ce G-SEC-ImportUserSeptember2023
+
