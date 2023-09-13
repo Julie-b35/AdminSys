@@ -13,9 +13,17 @@ cd9d44b5-96d3-4845-a9ad-ae41ba72952f admin@rtssr014f-6.lab-eni.fr
 Get-MsolGroup | select ObjectID,DisplayName
 Groupes
 
-ObjectId                               DisplayName                
---------                               -----------                                                                 
+ObjectId                             DisplayName
+--------                             -----------
 21327b50-aa52-4f5c-8550-8d7675979eca G-SEC-LicenceOffice365_E3
 3c74bc27-c408-4505-9314-aa78171b9631 G-SEC-RoleAdminGlobale
 f45785c3-01db-495e-bbad-e306998db9ce G-SEC-ImportUserSeptember2023
+d49bb07f-4403-4f91-aff6-b6b458c78139 G-365-Restauration
+23255436-6f42-477d-98b2-b75e85113b49 G-365-CE
+eec37fa9-45d2-45db-87c0-6b942ff3553a G-365-Pédagogie
+c240587e-a30d-4655-bd30-45712c939d3d G-365-Informatique
+d6b246aa-dccb-4863-9c2c-6d086dc33c14 G-SEC-LicencesMicrosoft365_E5
+930f272b-22b1-4c33-8252-0320f7f959c0 G-SEC-LicenceEntrepriseMobilityAndSecurity_E5
+72ea0463-32d8-4b36-9db7-d471a9ac2900 G-SEC-LicenceWindows10Enterprise_E3
+b6eb282d-add9-46c5-a40d-53afe86a9c18 G-SEC-RoleAdministrateursMotDePasse
 
