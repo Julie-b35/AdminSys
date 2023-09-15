@@ -1,0 +1,225 @@
+#!/bin/bash
+# Codes d'erreur :
+#	1) Le nombre d'utilisateurs n'est pas un entier positif
+#	2) Le nombre d'utilisateurs n'est pas inférieur à 40
+#	3) Le nombre de semaine indiqué n'est pas possible
+#	4) Mauvais argument
+#	5) Mauvaise configuration de bind9 avant de créer les comptes
+#	6) Mauvaise configuration de bind9 après avoir créé les comptes
+#	9) Erreur de création d'au moins un utilisateur
+
+declare -r SCRIPT="$0"
+declare -r USERS_HOME="/var/cache/bind"
+declare -r DOMAINE="lab-eni.fr"
+SERVER_IP="$(ip -o -4 a show $(ip r | awk '/default/ { print $5 }') | sed -E 's#^.*inet ([^/]+)/.*$#\1#')"
+zonepardefaut="$(mktemp)"
+readonly SERVER_IP
+readonly zonepardefaut
+
+synopsis () {
+	echo "Utilisation :"
+	echo -e "\tcreate-users -c NB_UTILISATEURS [-p PROMOTION] [-s NB_SEMAINES]"
+	echo -e "ou\tsudo $SCRIPT -c NB_UTILISATEURS [-p PROMOTION] [-s NB_SEMAINES]\n"
+	echo -e "NB_UTILISATEURS : \n\t-c NB_UTILISATEURS\n\t--nombre-compte NB_UTILISATEURS"
+	echo -e "\tNombre d'utilisateurs à créer."
+	echo -e "\tCe nombre doit être compris entre 0 et 40."
+	echo -e "\tChaque utilisateur disposera de sa propre zone dans le domaine pédagogique.\n"
+	echo -e "PROMOTION : \n\t-p PROMOTION\n\t--promotion PROMOTION"
+	echo -e "\tNom de la promotion utilisée en préfix dans le nom de l'utilisateur\n"
+	echo -e "NB_SEMAINES : \n\t-s NB_SEMAINES\n\t--nombre-semaine NB_SEMAINES"
+	echo -e "\tNombre de semaines pendant lesquelles les utilisateurs créés existeront."
+	echo -e "\tCe nombre doit être compris entre 1 et 2 (par défaut, 2)."
+	exit "$1"
+}
+
+if [[ -z "$1" ]] ; then
+	synopsis 4
+fi
+
+while [[ -n "$1" ]]
+	do
+	case $1 in
+	-c|--nombre-compte)
+		if [[ "$2" != -*  && "$2" != "" ]] ; then
+			nb_utilisateurs="$2"
+			# Cas particulier, si $nb_utilisateurs = 0 alors création uniquement du domaine principal
+			if [[ "$nb_utilisateurs" -le 0 || "$nb_utilisateurs" -ge 40 || "$nb_utilisateurs" != +([[:digit:]]) ]] ; then
+				synopsis 1
+			fi
+		else
+			synopsis 1
+		fi
+		shift 2
+		;;
+	-s|--nombre-semaine)
+		if [[ "$2" != -*  && "$2" != "" ]] ; then
+			nb_semaines="$2"
+			if [[ "$nb_semaines" != [12] || "$nb_semaines" != +([[:digit:]]) ]] ; then
+				synopsis 2
+			fi
+		else
+			synopsis 2
+		fi
+		shift 2
+		;;
+	-p|--promotion)
+		if [[ "$2" != -*  && "$2" != "" ]] ; then
+			promotion="$(echo "${2,,}" | tr -d '_')"
+		else
+			synopsis 4
+		fi
+		shift 2
+		;;
+	-h|--help)
+		synopsis 0
+		;;
+	*)
+		synopsis 4
+		;;
+	esac
+done
+
+[[ -z $nb_utilisateurs ]] && synopsis 1
+
+# début du script
+echo "Création de $nb_utilisateurs utilisateur(s) en cours, veuillez patienter"
+
+affichage=$(mktemp information-utilisateur.XXXX)
+erreurs=$(mktemp)
+chown "$(logname):" "$affichage"
+
+cat > "$zonepardefaut" << FIN
+\$TTL 300		; Conservation des données en cache : 5 minutes
+@	SOA	ns.$DOMAINE. hostmaster.$DOMAINE. (
+		1	; Numéro de série de la zone
+		300	; Rafraichissement de la zone (serveur secondaire)
+		600	; Nouvelle tentative (serveur secondaire)
+		3600	; Expiration de la zone
+		60 )	; Cache des réponses négative
+@	NS	ns.$DOMAINE.
+; Adapter les lignes ci dessous à votre besoin
+@	A	$SERVER_IP
+test	A	$SERVER_IP
+
+FIN
+
+if [[ $nb_semaines -eq 1 ]]
+then
+	expiration="$(date +%F --date='+7 day')"
+else
+	expiration="$(date +%F --date='+15 day')"
+fi
+
+declare -i echec=0
+
+mkdir -p "$USERS_HOME"
+
+named-checkconf || (echo -e "Le serveur bind9 n'est pas dans un état stable\nContactez l'administrateur" && exit 5)
+
+####### Bloc Non nécessaire, devrait être géré par la config ansible du serveur
+# Configuration de bind
+mkdir -p "/etc/bind/zone.$DOMAINE.conf.d/"
+bindinclude="include \"/etc/bind/zone.$DOMAINE.conf\" ;"
+grep -qxF "$bindinclude" /etc/bind/named.conf || echo "$bindinclude" >> /etc/bind/named.conf
+groupeadd stagiaires 2>/dev/null
+#######
+
+numero=1
+
+while [[ $nb_utilisateurs -gt 0 ]]
+do
+	if [[ -n $promotion ]] ; then
+		utilisateur="$promotion-$numero" && ((numero++))
+	else # Créer un nom d'utilisateur aléatoire en l'absence de promotion.
+		utilisateur="stagiaire-$RANDOM"
+		while [[ $(id "$utilisateur" 2>/dev/null) && ! -e "$fichierzone" ]]
+		do
+			utilisateur="stagiaire-$RANDOM"
+		done
+	fi
+	fichierzone="$USERS_HOME/$utilisateur"
+
+	motdepasse="$(pwgen 20 1 2>> $erreurs)"
+
+	useradd \
+		--home-dir "$USERS_HOME" \
+		--password "$(mkpasswd --method=sha-512 $motdepasse)" \
+		--expiredate "$expiration" \
+		--shell "/usr/bin/bash" \
+		--groups "stagiaires" \
+		"$utilisateur" 2>> "$erreurs"
+	# passwd --quiet --expire "$utilisateur" 2>> "$erreurs"
+	# Pas necessaire d'expirer les mots de passe
+
+	if [[ -s "$erreurs" ]]
+	then
+		echec+=1
+		echo -e "\e[1,31mErreur(s)\e[0m	 durant la création de $utilisateur"
+		cat "$erreurs"
+		rm "$erreurs"
+	else
+		echo -e "\e[1,32mOK\e[0m $utilisateur"
+		cat > "/etc/bind/zone.$DOMAINE.conf.d/$utilisateur.conf" 2>> $erreurs << FIN
+zone "$utilisateur.$DOMAINE" {
+	type master;
+	file "$utilisateur";
+};
+FIN
+		cat "$zonepardefaut" > "$fichierzone" 2>> "$erreurs"
+		chown "$utilisateur":eni "$fichierzone" 2>> "$erreurs"
+		chmod 660 "$fichierzone" 2>> "$erreurs"
+		cat >> "$affichage" << FIN
+Voici les éléments pour éditer votre zone DNS $utilisateur.$DOMAINE.
+* Connectez vous en SSH avec les informations :
+	ssh $utilisateur@ns.$DOMAINE
+	Mot de passe : $motdepasse
+* Vous êtes responsable de la sécurité de votre zone.
+* Éditez votre zone DNS dans le fichier
+	$fichierzone
+* Votre zone sera automatiquement supprimée à la fin de votre cours ;
+	La conservation de vos réalisations est à votre charge.
+* ATTENTION : En éditant votre zone, vous publiez sur internet ;
+	Toute utilisation en dehors du contexte des ateliers est formellement interdite ;
+	Les changements que vous effectuez sur les zones sont enregistrés.
+FIN
+	fi
+	((nb_utilisateurs--))
+done
+
+# Création de la zone principale
+cat > "/etc/bind/zone.$DOMAINE.conf.d/$DOMAINE.conf" << FIN
+zone "$DOMAINE" {
+	type master;
+	file "$DOMAINE";
+};
+FIN
+
+{
+cat "$zonepardefaut"
+echo "@		A	$SERVER_IP"
+echo "ns		A	$SERVER_IP"
+} > "$USERS_HOME/$DOMAINE"
+
+echo -e "\n"
+cat "$affichage"
+echo -e "\n\t=> Retrouvez ces information dans le fichier $affichage"
+
+rm "$zonepardefaut"
+
+[[ echec -gt 0 ]] && echo "Il y a eu $echec echec(s) de création de compte."
+
+rm "/etc/bind/zone.$DOMAINE.conf" 2>/dev/null
+for fichier in /etc/bind/zone.$DOMAINE.conf.d/*.conf
+do
+	echo "include \"$fichier\" ;" >> "/etc/bind/zone.$DOMAINE.conf"
+done
+
+named-checkconf || (echo -e "Le serveur bind9 n'est pas dans un état stable\nContactez l'administrateur" && exit 6)
+rndc reload || (echo -e "Le serveur bind9 n'est pas dans un état stable\nContactez l'administrateur" && exit 6)
+
+[[ echec -gt 0 ]] && exit 9
+
+
+
+
+################### ADD OPTION ASR POUR RFC2136 POWAAAAAAAAAAA

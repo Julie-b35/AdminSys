@@ -173,3 +173,5 @@ Add-ADGroupMember -Identity 'GG_Comptabilité' -Members 'Modèle ResComptable', 
 Add-ADGroupMember -Identity 'GG_Direction' -Members 'Modèle Direction'
 Add-ADGroupMember -Identity 'GG_Commercial' -Members 'Modèle Commercial'
 $password = ConvertTo-SecureString 'Pa$$w0rd' -AsPlainText -Force
+
+Get-ADUser -filter 'name -eq "Julie Brindejont"'
